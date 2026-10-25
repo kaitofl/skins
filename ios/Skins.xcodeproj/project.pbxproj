@@ -1,0 +1,44 @@
+// !$*UTF8*$!
+{archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
+EC9CF2117A54C17D73056F0A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/AdviceView.swift"; sourceTree = SOURCE_ROOT; };
+C6CF1FFF8EAEB709985526F4 = { isa = PBXBuildFile; fileRef = EC9CF2117A54C17D73056F0A; };
+661C696272F9F8354F757239 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/AppStore.swift"; sourceTree = SOURCE_ROOT; };
+451EEAEDC9BB9A7D9F6A6430 = { isa = PBXBuildFile; fileRef = 661C696272F9F8354F757239; };
+6EC0586F1175C2C55E4D397D = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/BackupView.swift"; sourceTree = SOURCE_ROOT; };
+AD08083AEEC718FE797B231D = { isa = PBXBuildFile; fileRef = 6EC0586F1175C2C55E4D397D; };
+8ECBA766E89D7699452498A2 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/Design.swift"; sourceTree = SOURCE_ROOT; };
+20EC387460701924D955E6F4 = { isa = PBXBuildFile; fileRef = 8ECBA766E89D7699452498A2; };
+1F3DE9FB2A0178C4D56C8614 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/FaceMap.swift"; sourceTree = SOURCE_ROOT; };
+0E4CE68A0190A358409E3D7A = { isa = PBXBuildFile; fileRef = 1F3DE9FB2A0178C4D56C8614; };
+90C890DF3A69A7BFCE5BC3AC = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/JournalView.swift"; sourceTree = SOURCE_ROOT; };
+28235A19644EFC52E13C60C7 = { isa = PBXBuildFile; fileRef = 90C890DF3A69A7BFCE5BC3AC; };
+CFAA1FEA6A62D3A74F44A6F0 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/ProductSheet.swift"; sourceTree = SOURCE_ROOT; };
+D11166C49C364D1E338D6A25 = { isa = PBXBuildFile; fileRef = CFAA1FEA6A62D3A74F44A6F0; };
+EA7FB4AA5E6DA321E1F2088A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/RecordEditor.swift"; sourceTree = SOURCE_ROOT; };
+B7222037EBF524CF670700A7 = { isa = PBXBuildFile; fileRef = EA7FB4AA5E6DA321E1F2088A; };
+3DF88A97F16F2734C7E3DE51 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/ShelfView.swift"; sourceTree = SOURCE_ROOT; };
+B00FEDA623E53FC68AF388FC = { isa = PBXBuildFile; fileRef = 3DF88A97F16F2734C7E3DE51; };
+B40BA4847548816671A5175D = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/SkinsApp/SkinsApp.swift"; sourceTree = SOURCE_ROOT; };
+EE18E62071E4C7339A4EAB0A = { isa = PBXBuildFile; fileRef = B40BA4847548816671A5175D; };
+0189424A5A60FED329FA868E = { isa = PBXFileReference; lastKnownFileType = folder; path = Sources/SkinsApp/Content; sourceTree = SOURCE_ROOT; };
+3685E330EC5277A9DD5661C6 = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
+7D1043473D55BFA90E8530D3 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = Skins.app; sourceTree = BUILT_PRODUCTS_DIR; };
+FBDC4F23F93125BBEEAE800C = { isa = PBXGroup; children = (7D1043473D55BFA90E8530D3,); name = Products; sourceTree = "<group>"; };
+B28B7AF69320201D1CF206EB = { isa = PBXGroup; children = (EC9CF2117A54C17D73056F0A, 661C696272F9F8354F757239, 6EC0586F1175C2C55E4D397D, 8ECBA766E89D7699452498A2, 1F3DE9FB2A0178C4D56C8614, 90C890DF3A69A7BFCE5BC3AC, CFAA1FEA6A62D3A74F44A6F0, EA7FB4AA5E6DA321E1F2088A, 3DF88A97F16F2734C7E3DE51, B40BA4847548816671A5175D, 0189424A5A60FED329FA868E, 3685E330EC5277A9DD5661C6, FBDC4F23F93125BBEEAE800C,); sourceTree = "<group>"; };
+ECFA12C85679D51D3E67750D = { isa = PBXBuildFile; fileRef = 0189424A5A60FED329FA868E; };
+F62928A95683C252DA91C864 = { isa = PBXBuildFile; fileRef = 3685E330EC5277A9DD5661C6; };
+D6C9E8A172005E68A1DD674F = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (ECFA12C85679D51D3E67750D,F62928A95683C252DA91C864,); runOnlyForDeploymentPostprocessing = 0; };
+4E57AE888889001C06A4F7E8 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (C6CF1FFF8EAEB709985526F4, 451EEAEDC9BB9A7D9F6A6430, AD08083AEEC718FE797B231D, 20EC387460701924D955E6F4, 0E4CE68A0190A358409E3D7A, 28235A19644EFC52E13C60C7, D11166C49C364D1E338D6A25, B7222037EBF524CF670700A7, B00FEDA623E53FC68AF388FC, EE18E62071E4C7339A4EAB0A,); runOnlyForDeploymentPostprocessing = 0; };
+582681C2EAE02B3F3D399C0C = { isa = XCLocalSwiftPackageReference; relativePath = .; };
+D069509556BFAFFC25586CC3 = { isa = XCSwiftPackageProductDependency; productName = SkinsCore; };
+514F8CA3EA7137C21680EBA1 = { isa = PBXBuildFile; productRef = D069509556BFAFFC25586CC3; };
+F178867DA2879CAE0F60630A = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (514F8CA3EA7137C21680EBA1,); runOnlyForDeploymentPostprocessing = 0; };
+7082CC0B6FC1282FCEABD07A = { isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = "app.kaitofl.skins"; PRODUCT_NAME = "Skins"; GENERATE_INFOPLIST_FILE = "YES"; INFOPLIST_KEY_CFBundleDisplayName = "Skins"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness"; INFOPLIST_KEY_UILaunchScreen_Generation = "YES"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES"; INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait"; INFOPLIST_KEY_UIUserInterfaceStyle = "Light"; INFOPLIST_KEY_CFBundleDevelopmentRegion = "ja"; CODE_SIGN_STYLE = "Automatic"; TARGETED_DEVICE_FAMILY = "1"; MARKETING_VERSION = "0.1.0"; CURRENT_PROJECT_VERSION = "1"; ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_EMIT_LOC_STRINGS = "YES"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG"; ONLY_ACTIVE_ARCH = "YES";}; name = Debug; };
+639A7CA24D39909E713B47F7 = { isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = "app.kaitofl.skins"; PRODUCT_NAME = "Skins"; GENERATE_INFOPLIST_FILE = "YES"; INFOPLIST_KEY_CFBundleDisplayName = "Skins"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness"; INFOPLIST_KEY_UILaunchScreen_Generation = "YES"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES"; INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait"; INFOPLIST_KEY_UIUserInterfaceStyle = "Light"; INFOPLIST_KEY_CFBundleDevelopmentRegion = "ja"; CODE_SIGN_STYLE = "Automatic"; TARGETED_DEVICE_FAMILY = "1"; MARKETING_VERSION = "0.1.0"; CURRENT_PROJECT_VERSION = "1"; ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_EMIT_LOC_STRINGS = "YES"; SWIFT_OPTIMIZATION_LEVEL = "-O";}; name = Release; };
+C57128001CE614BF8549D6BB = { isa = XCConfigurationList; buildConfigurations = (7082CC0B6FC1282FCEABD07A, 639A7CA24D39909E713B47F7,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+89E1FD6268CC0F221A2BE178 = { isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = "17.0"; SDKROOT = "iphoneos"; SWIFT_VERSION = "6.0"; CLANG_ENABLE_MODULES = "YES"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG"; ONLY_ACTIVE_ARCH = "YES";}; name = Debug; };
+E6DE6C99132752C914FEF632 = { isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = "17.0"; SDKROOT = "iphoneos"; SWIFT_VERSION = "6.0"; CLANG_ENABLE_MODULES = "YES"; SWIFT_OPTIMIZATION_LEVEL = "-O";}; name = Release; };
+862894B703A6DEDF96A9DD6C = { isa = XCConfigurationList; buildConfigurations = (89E1FD6268CC0F221A2BE178, E6DE6C99132752C914FEF632,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+0E8A3AD980EC179856012B7E = { isa = PBXNativeTarget; buildConfigurationList = C57128001CE614BF8549D6BB; buildPhases = (4E57AE888889001C06A4F7E8,F178867DA2879CAE0F60630A,D6C9E8A172005E68A1DD674F,); buildRules = (); dependencies = (); name = Skins; packageProductDependencies = (D069509556BFAFFC25586CC3,); productName = Skins; productReference = 7D1043473D55BFA90E8530D3; productType = "com.apple.product-type.application"; };
+98F54143AB4E86B28C3AFEE0 = { isa = PBXProject; attributes = { LastUpgradeCheck = 1600; BuildIndependentTargetsInParallel = YES; }; buildConfigurationList = 862894B703A6DEDF96A9DD6C; compatibilityVersion = "Xcode 14.0"; developmentRegion = ja; hasScannedForEncodings = 0; knownRegions = (ja,en,Base,); mainGroup = B28B7AF69320201D1CF206EB; packageReferences = (582681C2EAE02B3F3D399C0C,); productRefGroup = FBDC4F23F93125BBEEAE800C; projectDirPath = ""; projectRoot = ""; targets = (0E8A3AD980EC179856012B7E,); };
+}; rootObject = 98F54143AB4E86B28C3AFEE0; }

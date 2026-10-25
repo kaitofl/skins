@@ -1,0 +1,8 @@
+ios/.build/
+ios/.swiftpm/
+ios/**/xcuserdata/
+ios/DerivedData/
+.DS_Store
+
+ios/*-preview.png
+ios/xcode-agreement.png

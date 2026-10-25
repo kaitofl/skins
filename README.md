@@ -30,3 +30,9 @@ GitHub Pages は `gh-pages` ブランチのルートを配信します。アプ�
 ```sh
 git subtree push --prefix=dist origin gh-pages
 ```
+
+## iOS / SwiftUI 版
+
+iPhone向けのネイティブ実装は [`ios/`](ios/README.md) にあります。
+Xcodeでは `ios/Skins.xcodeproj` を開きます。商品画像・棚・提案・月カレンダー・顔タップでの記録を実装しています。
+Xcode 27.1でiPhone 16e / iOS 26.1 Simulator向けにビルド・起動し、保存と再起動後の復元まで確認済みです。実機・署名・TestFlightの確認はこれからです。
