@@ -17,3 +17,36 @@ html{background:#eeeaf1}body{background:#eeeaf1}.shell{width:390px;max-width:100
 .brand,.topbar .mobile-logo{font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;line-height:1;letter-spacing:-1.65px;color:#382d41}
 .brand .logo-type,.topbar .mobile-logo .logo-type{color:inherit}
 .topbar{padding:20px 18px 0}
+
+/* Warm plaster, pale oak, and soft daylight. */
+:root{--blue:#6b7663;--line:#dedbd2;--muted:#827f74;color:#3e4138}
+html,body{background:#e7e6e0}
+.shell{background:radial-gradient(ellipse 120% 680px at 0 0,#fffefb 0%,transparent 80%),linear-gradient(115deg,#f6f4ed,#eeede6);color:#3e4138;box-shadow:0 0 50px #514d3c0b}
+.brand,.topbar .mobile-logo,.workspace-heading h1{color:#3d4238}
+.layout{padding-top:27px}
+.date-selector{border-color:#dedbd2;margin-bottom:24px}
+.date-selector-head{color:#79796d}.date-selector .mini-day{color:#969487}
+.date-selector .mini-day strong{color:#53584a}
+.date-selector .mini-day.selected strong{background:#717b65;color:#fff;box-shadow:0 3px 8px #4b563a16}
+.date-selector .mini-day:hover{background:#e6e6da66}
+.date-selector .is-today:not(.selected) strong{color:#6b7663;box-shadow:inset 0 0 0 1px #aeb59f}
+.shelf-label{border-color:#dddcd2}.shelf-label h2{color:#555a4c}.shelf-label h2 svg{color:#979c88}
+.shelf-step{font-size:25px;font-weight:400;letter-spacing:.5px;color:#a6a395;text-shadow:0 1px 0 #fff9;padding-bottom:10px}
+.shelf-photo{padding-bottom:7px}
+.shelf-photo .shelf-cutout:not(.source-white-bg){filter:drop-shadow(3px 4px 3px #4e473125) drop-shadow(0 1px 1px #3a352018)}
+.shelf-photo::before{bottom:5px;height:5px;opacity:.8;background:#51493135;filter:blur(2px)}
+.shelf-photo::after{height:7px;border-top:1px solid #fff9;background:repeating-linear-gradient(2deg,transparent 0 2px,#9e7e4c12 3px,transparent 4px 7px),linear-gradient(180deg,#efe3ce 0%,#e5d3b5 35%,#d5bd98 100%);box-shadow:0 3px 2px #79705b15,0 7px 12px #62583f19}
+.shelf-brand{color:#555b4d}.shelf-role{color:#8a8b7e}
+.sidebar{background:#fafaf5ed;border-color:#deded3}.nav button{color:#999c8d}
+.nav button.active{color:#627153;background:#e7eadf;border-color:#929e83}
+.pending-care summary{color:#8a8e7e}.pending-care summary span{background:#e8eadf}
+.cosmetic-meta{background:#f7f6ef;border-color:#e6e5da}.cosmetic-tags .cosmetic-chip{color:#727864;box-shadow:inset 0 0 0 1px #e7e9dd}
+.btn,.row-add{color:#6b765f;border-color:#cbd1c0}.btn.primary{background:#75816a;color:#fff;border-color:transparent}
+.detail-image{background:#f4f4ec!important}.detail-title h3,.modal-header h2{color:#4f5947}
+/* Recessed shelf bays give the product collection its own material surface. */
+.shelf-mode .product-grid{padding:20px 9px 18px;border-radius:5px;background:linear-gradient(105deg,#e3e5d9 0%,#eeeee4 44%,#e2e4d7 100%);box-shadow:inset 3px 3px 12px #58604710,inset -2px 0 7px #66705208;row-gap:22px}
+.shelf-mode .shelf-label{border:0;padding-bottom:0;margin-bottom:16px}
+.shelf-mode .shelf-photo::after{left:-16px;right:-16px}
+.shelf-mode .shelf-step{color:#939987;text-shadow:0 1px 0 #ffffff70}
+.shelf-mode .shelf-brand{color:#515a47}.shelf-mode .shelf-role{color:#7a826d}
+.shelf-mode .pending-care .product-grid{padding-bottom:18px}
