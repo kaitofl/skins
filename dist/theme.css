@@ -67,3 +67,6 @@ button:focus-visible,a:focus-visible{outline-color:#9fb9d5}
 html,body,.shell{background:#fff}
 .shelf-mode .product-grid{background:#fff;box-shadow:none}
 .sidebar{background:#fffffff2}
+/* Daylight and evening tint the shelf wall, fading softly into white. */
+.shelf-mode .shelf-row:has(#track-am)>.product-grid{background:radial-gradient(ellipse 115% 65% at 12% 38%,#edf4fb 0%,transparent 78%),linear-gradient(180deg,#fff 0%,#f3f7fc 15%,#f6f9fd 78%,#fff 100%)}
+.shelf-mode .shelf-row:has(#track-pm)>.product-grid,.shelf-mode .shelf-row:has(#track-pm) .pending-care>.product-grid{background:radial-gradient(ellipse 115% 70% at 90% 40%,#e8edf7 0%,transparent 80%),linear-gradient(180deg,#fff 0%,#edf1f8 17%,#f0f3f9 78%,#fff 100%)}
