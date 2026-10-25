@@ -8,6 +8,7 @@ struct ShelfView: View {
   @Namespace private var reorderNamespace
   @ViewState private var selected: Product?
   @ViewState private var adding = false
+  @ViewState private var isReordering = false
 
   private var columns: Int { dynamicTypeSize.isAccessibilitySize ? 2 : 4 }
 
@@ -21,6 +22,12 @@ struct ShelfView: View {
       return String(format: "%02d", index + 1 - (index >= b ? 1 : 0))
     }
     return String(format: "%02d", index + 1)
+  }
+
+  private func beginReordering() {
+    guard !isReordering else { return }
+    isReordering = true
+    SkinsStyle.feedback()
   }
 
   private func reorder(_ id: Int, to target: Int) -> Bool {
@@ -54,14 +61,17 @@ struct ShelfView: View {
                 .foregroundStyle(SkinsStyle.ink)
                 .accessibilityAddTraits(.isHeader)
               Spacer(minLength: 8)
-              Text("長押しで並べ替え").font(.caption).foregroundStyle(SkinsStyle.muted)
+              Text(isReordering ? "ドラッグで移動" : "長押しで並べ替え").font(.caption).foregroundStyle(
+                SkinsStyle.muted)
             }.padding(.horizontal, 22)
             ForEach(starts, id: \.self) { start in
               ShelfRow(
                 products: Array(products[start..<min(start + columns, products.count)]),
                 columns: columns, stepNumber: stepNumber, reorderNamespace: reorderNamespace,
+                isReordering: isReordering, onBeginReordering: beginReordering,
                 onMove: reorder, onMoveAdjacent: moveAdjacent,
                 onSelect: { product in
+                  guard !isReordering else { return }
                   selected = product
                   SkinsStyle.feedback()
                 })
@@ -83,6 +93,15 @@ struct ShelfView: View {
       }.padding(.top, 14)
     }
     .background(.white).navigationTitle("")
+    .toolbar {
+      if isReordering {
+        ToolbarItem(placement: .confirmationAction) {
+          Button("完了") { isReordering = false }
+            .font(.body.weight(.semibold))
+        }
+      }
+    }
+    .onDisappear { isReordering = false }
     .sheet(item: $selected) { ProductSheet(product: $0) }
     .sheet(isPresented: $adding) {
       ProductEditor(product: Product(id: Int(Date().timeIntervalSince1970 * 1000), name: ""))
@@ -96,6 +115,8 @@ private struct ShelfRow: View {
   let columns: Int
   let stepNumber: (Product) -> String
   let reorderNamespace: Namespace.ID
+  let isReordering: Bool
+  let onBeginReordering: () -> Void
   let onMove: (Int, Int) -> Bool
   let onMoveAdjacent: (Product, Int) -> Void
   let onSelect: (Product) -> Void
@@ -111,6 +132,7 @@ private struct ShelfRow: View {
           ShelfSlot(
             product: product, step: stepNumber(product), artHeight: artHeight,
             numberHeight: numberHeight, reorderNamespace: reorderNamespace,
+            isReordering: isReordering, onBeginReordering: onBeginReordering,
             onSelect: { onSelect(product) }, onMove: onMove,
             onMoveAdjacent: { onMoveAdjacent(product, $0) })
         } else {
@@ -139,6 +161,8 @@ private struct ShelfSlot: View {
   let artHeight: CGFloat
   let numberHeight: CGFloat
   let reorderNamespace: Namespace.ID
+  let isReordering: Bool
+  let onBeginReordering: () -> Void
   let onSelect: () -> Void
   let onMove: (Int, Int) -> Bool
   let onMoveAdjacent: (Int) -> Void
@@ -148,18 +172,24 @@ private struct ShelfSlot: View {
     Button(action: onSelect) {
       ShelfItem(product: product, step: step, artHeight: artHeight, numberHeight: numberHeight)
         .matchedGeometryEffect(id: product.id, in: reorderNamespace)
+        .modifier(ShelfWiggle(enabled: isReordering, alternate: product.id.isMultiple(of: 2)))
     }
-    .buttonStyle(.plain).frame(maxWidth: .infinity).contentShape(Rectangle())
+    .buttonStyle(.plain).frame(maxWidth: .infinity)
+    .contentShape(.interaction, Rectangle())
+    .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 24, style: .continuous))
     .overlay {
-      RoundedRectangle(cornerRadius: 12)
-        .stroke(targeted ? SkinsStyle.accent.opacity(0.7) : .clear, lineWidth: 2)
+      RoundedRectangle(cornerRadius: 24, style: .continuous)
+        .fill(SkinsStyle.accent.opacity(targeted ? 0.07 : 0))
+        .overlay {
+          RoundedRectangle(cornerRadius: 24, style: .continuous)
+            .stroke(SkinsStyle.accent.opacity(targeted ? 0.22 : 0), lineWidth: 1)
+        }
         .padding(-3).allowsHitTesting(false)
     }
-    .draggable("skins-shelf-product:\(product.id)") {
-      ProductArt(product: product, height: 132, grounded: true)
-        .frame(width: 90).padding(14)
-        .background(.white, in: RoundedRectangle(cornerRadius: 16))
-    }
+    .simultaneousGesture(
+      LongPressGesture(minimumDuration: 0.35).onEnded { _ in onBeginReordering() }
+    )
+    .modifier(ShelfDragSource(enabled: isReordering, product: product))
     .dropDestination(for: String.self) { items, _ in
       guard items.count == 1, let value = items.first,
         value.hasPrefix("skins-shelf-product:"),
@@ -171,9 +201,53 @@ private struct ShelfSlot: View {
       targeted = $0
     }
     .accessibilityLabel("\(product.name)、\(product.daysLabel)、詳細を開く")
-    .accessibilityHint("長押しして同じ時間の棚の中でドラッグすると順番を変更できます")
+    .accessibilityHint("長押しで並べ替えを開始し、同じ時間の棚の中でドラッグできます。完了ボタンで終了します")
+    .accessibilityAction(named: Text("並べ替えを開始")) { onBeginReordering() }
     .accessibilityAction(named: Text("前に移動")) { onMoveAdjacent(-1) }
     .accessibilityAction(named: Text("後ろに移動")) { onMoveAdjacent(1) }
+  }
+}
+
+/// Activate native dragging after entering edit mode so the initial long press
+/// is reserved for lifting the whole shelf into its editing state.
+private struct ShelfDragSource: ViewModifier {
+  let enabled: Bool
+  let product: Product
+
+  @ViewBuilder func body(content: Content) -> some View {
+    if enabled {
+      content.draggable("skins-shelf-product:\(product.id)") {
+        ProductArt(product: product, height: 132, grounded: true)
+          .frame(width: 90).padding(18)
+          .background(.white, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+          .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+          .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 28, style: .continuous))
+      }
+    } else {
+      content
+    }
+  }
+}
+
+/// A small alternating tilt keeps the shelf calm while making edit mode visible.
+private struct ShelfWiggle: ViewModifier {
+  let enabled: Bool
+  let alternate: Bool
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @ViewState private var tilted = false
+
+  func body(content: Content) -> some View {
+    content
+      .rotationEffect(
+        .degrees(enabled && !reduceMotion ? (tilted ? 0.8 : -0.8) * (alternate ? 1 : -1) : 0),
+        anchor: .bottom
+      )
+      .animation(
+        enabled && !reduceMotion
+          ? .easeInOut(duration: alternate ? 0.16 : 0.18).repeatForever(autoreverses: true)
+          : .easeOut(duration: 0.15), value: tilted
+      )
+      .onChange(of: enabled, initial: true) { _, value in tilted = value }
   }
 }
 
