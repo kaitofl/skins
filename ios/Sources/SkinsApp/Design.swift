@@ -69,6 +69,7 @@ struct ProductArt: View {
       [String: ProductImageFrame].self, from: AppStore.resource("image-bounds"))) ?? [:]
   let product: Product
   var height: CGFloat = 140
+  var grounded = false
   var asset: String {
     product.asset ?? String([5102: 5001, 5103: 5002, 5106: 5004][product.id] ?? product.id)
   }
@@ -105,10 +106,11 @@ struct ProductArt: View {
         image.resizable().frame(width: b.w * scale, height: b.h * scale)
           .offset(
             x: (geo.size.width - b.bw * scale) / 2 - b.x * scale,
-            y: (geo.size.height - b.bh * scale) / 2 - b.y * scale)
+            y: (geo.size.height - b.bh * scale) / (grounded ? 1 : 2) - b.y * scale)
       }.clipped()
     } else {
-      image.resizable().scaledToFit()
+      image.resizable().scaledToFit().frame(
+        maxWidth: .infinity, maxHeight: .infinity, alignment: grounded ? .bottom : .center)
     }
   }
 }
