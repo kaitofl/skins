@@ -69,6 +69,45 @@ func validatesSpotBoundsAndProductSchedule() throws {
   try expectThrows { _ = try invalid.validated() }
 }
 
+func reorderPreservesOtherRoutineAndRecords() throws {
+  var state = AppState(
+    products: [
+      Product(id: 1, name: "Morning 1", time: .am),
+      Product(id: 4, name: "Evening 1", time: .pm),
+      Product(id: 2, name: "Morning 2", time: .am),
+      Product(id: 5, name: "Evening 2", time: .pm),
+      Product(id: 3, name: "Morning 3", time: .am),
+    ], records: [SkinRecord(date: "2026-01-01", memo: "keep")])
+  let original = state
+  try check(state.moveProduct(1, to: 3))
+  try check(state.products.map(\.id) == [2, 4, 3, 5, 1])
+  try check(state.records == original.records)
+  try check(state.products[1] == original.products[1])
+  try check(state.products[3] == original.products[3])
+  try check(state.moveProduct(1, to: 2))
+  try check(state == original)
+  try check(!state.moveProduct(1, to: 4))
+  try check(!state.moveProduct(1, to: 1))
+  try check(!state.moveProduct(999, to: 2))
+  try check(!state.moveProduct(1, to: 999))
+  try check(state == original)
+}
+func reorderedProductsPersistAcrossLaunches() throws {
+  let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+  defer { try? FileManager.default.removeItem(at: directory) }
+  let repository = DiskRepository(url: directory.appendingPathComponent("journal.json"))
+  var state = AppState(products: [
+    Product(id: 1, name: "Cleanser", time: .am),
+    Product(id: 2, name: "Serum", time: .am),
+    Product(id: 3, name: "Cream", time: .am),
+  ])
+  try check(state.moveProduct(3, to: 1))
+  try repository.save(state)
+  let restored = try repository.load()
+  try check(restored?.products.map(\.id) == [3, 1, 2])
+  try check(restored == state)
+}
+
 private func check(
   _ condition: @autoclosure () throws -> Bool, file: StaticString = #filePath, line: UInt = #line
 ) throws {
@@ -93,6 +132,8 @@ private func expectThrows(_ action: () throws -> Void) throws {
       ),
       ("Web backup and legacy records", webBackupDecodesAndRetainsLegacyAcne),
       ("Face bounds and usage schedules", validatesSpotBoundsAndProductSchedule),
+      ("Reorder isolates routines and preserves records", reorderPreservesOtherRoutineAndRecords),
+      ("Reordered shelf persists across launches", reorderedProductsPersistAcrossLaunches),
     ]
     for (name, run) in checks {
       try run()
@@ -102,7 +143,9 @@ private func expectThrows(_ action: () throws -> Void) throws {
     if CommandLine.arguments.count > 1 {
       let data = try Data(contentsOf: URL(fileURLWithPath: CommandLine.arguments[1]))
       let imported = try JSONDecoder().decode(AppState.self, from: data).validated()
-      print("PASS: exported Web backup — \(imported.products.count) products, \(imported.records.count) records")
+      print(
+        "PASS: exported Web backup — \(imported.products.count) products, \(imported.records.count) records"
+      )
     }
   }
 }

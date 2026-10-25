@@ -187,6 +187,24 @@ public struct AppState: Codable, Equatable, Sendable {
     records.append(record)
     records.sort { $0.date > $1.date }
   }
+  /// Move inside a routine, preserving the exact positions and order of the other routine.
+  /// The destination is the target's original index, matching a native collection move.
+  @discardableResult public mutating func moveProduct(_ id: Int, to targetID: Int) -> Bool {
+    guard id != targetID,
+      let source = products.first(where: { $0.id == id }),
+      let target = products.first(where: { $0.id == targetID }), source.time == target.time
+    else { return false }
+    let positions = products.indices.filter { products[$0].time == source.time }
+    var routine = positions.map { products[$0] }
+    guard let from = routine.firstIndex(where: { $0.id == id }),
+      let to = routine.firstIndex(where: { $0.id == targetID })
+    else { return false }
+    let moving = routine.remove(at: from)
+    routine.insert(moving, at: to)
+    for (index, position) in positions.enumerated() { products[position] = routine[index] }
+    return true
+  }
+
   public func previousSpots(before date: String) -> [AcneSpot] {
     let previous = records.filter { $0.date < date && !($0.acneSpots ?? []).isEmpty }.sorted {
       $0.date > $1.date

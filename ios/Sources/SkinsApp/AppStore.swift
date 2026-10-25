@@ -76,6 +76,11 @@ struct ProductKnowledge: Decodable {
   func info(_ product: Product) -> ProductKnowledge? {
     knowledge[String([5102: 5001, 5103: 5002, 5106: 5004][product.id] ?? product.id)]
   }
+  func moveProduct(_ id: Int, to targetID: Int) -> Bool {
+    var next = state
+    guard next.moveProduct(id, to: targetID) else { return false }
+    return commit { $0 = next }
+  }
   func saveProduct(_ product: Product) -> Bool {
     commit { next in
       if let index = next.products.firstIndex(where: { $0.id == product.id }) {

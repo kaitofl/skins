@@ -20,9 +20,15 @@ struct RootView: View {
   var body: some View {
     @Bindable var store = store
     TabView {
-      NavigationStack { ShelfView() }.tabItem { Label("MyCosme", systemImage: "square.grid.2x2") }
-      NavigationStack { AdviceView() }.tabItem { Label("Advice", systemImage: "sparkles") }
-      NavigationStack { JournalView() }.tabItem { Label("Records", systemImage: "book.closed") }
+      NavigationStack { ShelfView() }.tabItem {
+        #if os(iOS)
+          Label("ホーム", image: "CosmeticsTab")
+        #else
+          Label("ホーム", systemImage: "bubbles.and.sparkles")
+        #endif
+      }
+      NavigationStack { AdviceView() }.tabItem { Label("アドバイス", systemImage: "sparkles") }
+      NavigationStack { JournalView() }.tabItem { Label("記録", systemImage: "book.closed") }
     }
     .alert(
       "保存できませんでした",
