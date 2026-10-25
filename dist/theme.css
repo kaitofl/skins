@@ -63,3 +63,7 @@ button:focus-visible,a:focus-visible{outline-color:#9fb9d5}
 .shelf-mode .shelf-brand{color:#4b627e}.shelf-mode .shelf-role{color:#7d91a9}
 .shelf-mode .pending-care .product-grid{padding-bottom:18px}
 @media(max-width:360px){.layout{--page-gutter:12px}}
+/* One continuous white surface across the entire app and shelf walls. */
+html,body,.shell{background:#fff}
+.shelf-mode .product-grid{background:#fff;box-shadow:none}
+.sidebar{background:#fffffff2}
