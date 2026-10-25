@@ -1,7 +1,7 @@
 ios/.build/
 ios/.swiftpm/
 ios/**/xcuserdata/
-ios/DerivedData/
+ios/DerivedData*/
 .DS_Store
 
 ios/*-preview.png

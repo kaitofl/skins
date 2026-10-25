@@ -18,9 +18,9 @@ Web版と同じ14点の商品・画像を同梱しています。初回の肌プ
 1. MacにXcode本体とiOS Simulatorランタイムをインストールする。
 2. `ios/Skins.xcodeproj` を開く。
 3. Schemeで **Skins**、実行先でiPhoneシミュレーターを選び、Runを押す。
-4. 実機の場合はSigning & CapabilitiesのTeamにAppleアカウントを設定する。
+4. 実機の場合はSigning & CapabilitiesのTeamにAppleアカウントを設定する。現在の所有者の開発チームは設定済みです。
 
-Bundle Identifierは `app.kaitofl.skins`。配布前に利用するApple Developerチームに合わせて確認します。
+Bundle Identifierは `com.kaitofl.skins`。配布前に利用するApple Developerチームに合わせて確認します。
 アイコン・Launch Screen・日本語の開発言語・iPhoneの縦向き表示を設定済みです。
 
 プロジェクトを再生成する場合：
@@ -35,7 +35,8 @@ Xcode 27.1で **iPhone 16e / iOS 26.1 Simulator向けのDebugビルド・イン�
 棚と提案カードの表示、標準ボトムシート、肌状態・ケア・睡眠・顔タップでのニキビ状態の保存、月カレンダーへの反映、アプリ終了後の再起動でのデータ復元を確認しました。
 スクリーンショットの `iphone-*-preview.png` は実際のiOS Simulator画面です。
 
-macOS向けの同じSwiftUIソースでもビルド・動作確認しています。**実機、署名、TestFlight配布は未検証**です。
+macOS向けの同じSwiftUIソースでもビルド・動作確認しています。
+2026-10-25に、接続中の **iPhone 15 Pro / iOS 26.3.1** へ開発用署名でインストール・起動できることを確認しました。TestFlight配布は未実施です。
 iOS 17以降を対象にしていますが、操作確認に使ったランタイムはiOS 26.1です。
 
 ```sh
