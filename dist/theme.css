@@ -6,7 +6,7 @@ html{background:#eeeaf1}body{background:#eeeaf1}.shell{width:390px;max-width:100
 .collection-toggle{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;border:1px solid #dfd3e6;background:#fff9;color:#82648f;flex-shrink:0}.collection-toggle svg{width:22px;height:22px;stroke-width:1.4}.collection-toggle.active{background:#ece2f2;border-color:#ceb9da;color:#725384}.shelf-mode .product-grid{column-gap:10px;row-gap:21px;padding-top:8px;overflow:hidden}.shelf-mode .shelf-product{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}.shelf-product-button{display:flex;flex-direction:column;padding:0;width:100%;text-align:center}.shelf-photo{position:relative;display:flex;align-items:flex-end;justify-content:center;width:100%;height:151px;padding:7px 11px 10px}.shelf-photo::after{content:'';position:absolute;left:-6px;right:-6px;bottom:0;height:5px;border-top:1px solid #fff;background:linear-gradient(#fff,#f1eaf6);box-shadow:0 4px 6px #6c46751a}.shelf-photo .remote-product{padding:0}.shelf-photo img{object-position:center bottom;mix-blend-mode:multiply}.shelf-caption{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 0 0;min-height:61px;width:100%}.shelf-brand{font-family:'DM Sans','Noto Sans JP',sans-serif;font-size:12px;font-weight:600;color:#594264;line-height:1.5}.shelf-role{font-size:11px;color:#8a7794;line-height:1.6;overflow-wrap:anywhere}.shelf-mode .pending-care .product-grid{padding-bottom:8px}.shelf-product-button:hover img{transform:translateY(-3px);transition:transform .2s}
 /* Actual object bounds meet the top of the shelf board, with a contact shadow. */
 .shelf-photo{padding:7px 11px 5px;isolation:isolate}.shelf-photo .shelf-cutout{display:block;width:100%;height:100%;overflow:hidden;stroke:none;position:relative;z-index:1}.shelf-photo::before{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:clamp(18px,calc(139px * var(--product-ratio,.45)),92%);height:5px;border-radius:50%;background:#55405d2b;filter:blur(1.5px);z-index:0}.shelf-photo::after{z-index:2;border-top:1px solid #fff;background:linear-gradient(180deg,#fff 0%,#f4edf8 55%,#e3d7ec 100%);box-shadow:0 4px 7px #6c467518}.shelf-product-button:hover img,.shelf-product:hover .remote-product-image{transform:none!important}.shelf-photo .remote-product{align-items:flex-end}.shelf-photo .cosmetic{transform:translateY(4px)}
-.shelf-photo .source-white-bg{mix-blend-mode:multiply}.shelf-product:last-child:nth-child(3n+1) .shelf-photo::after{right:calc(-200% - 26px)}.shelf-product:last-child:nth-child(3n+2) .shelf-photo::after{right:calc(-100% - 16px)}
+.shelf-photo .source-white-bg{mix-blend-mode:multiply}
 .shelf-photo{isolation:auto}
 
 /* Sequence numbers sit above the objects; shelf contact stays fixed below. */
@@ -57,8 +57,6 @@ button:focus-visible,a:focus-visible{outline-color:#9fb9d5}
 .shelf-mode .product-grid{width:calc(100% + var(--page-gutter) * 2);margin-inline:calc(-1 * var(--page-gutter));padding:22px var(--page-gutter) 18px;border-radius:0;background:linear-gradient(105deg,#e2eaf3 0%,#edf2f8 44%,#dce6f1 100%);box-shadow:inset 0 4px 12px #44658809;row-gap:22px}
 .shelf-mode .shelf-label{border:0;padding-bottom:0;margin-bottom:16px}
 .shelf-mode .shelf-photo::after{left:-16px;right:-16px}
-.shelf-mode .shelf-product:last-child:nth-child(3n+1) .shelf-photo::after{right:calc(-200% - 20px - var(--page-gutter))}
-.shelf-mode .shelf-product:last-child:nth-child(3n+2) .shelf-photo::after{right:calc(-100% - 10px - var(--page-gutter))}
 .shelf-mode .shelf-step{color:#8b9eb4;text-shadow:0 1px 0 #ffffff80}
 .shelf-mode .shelf-brand{color:#4b627e}.shelf-mode .shelf-role{color:#7d91a9}
 .shelf-mode .pending-care .product-grid{padding-bottom:18px}
@@ -72,3 +70,7 @@ html,body,.shell{background:#fff}
 .shelf-mode .product-grid{background:transparent;box-shadow:none}
 .shelf-mode .shelf-role{color:#617894}
 .shelf-mode .shelf-brand{color:#405773}
+
+/* A single board per row prevents overlapping shadows at product boundaries. */
+.shelf-mode .shelf-photo::after{display:none}
+.shelf-mode .shelf-product:nth-child(3n+1) .shelf-photo::after{display:block;left:calc(-1 * var(--page-gutter));right:auto;width:calc(300% + 20px + var(--page-gutter) * 2);box-shadow:0 3px 7px #3d587716}
