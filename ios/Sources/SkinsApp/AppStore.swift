@@ -13,6 +13,7 @@ struct ProductKnowledge: Decodable {
   private(set) var loadError: String?
   var message: String?
   let repository: DiskRepository
+  let candidates: [ProductCandidate]
   let knowledge: [String: ProductKnowledge]
   init(directory: URL? = nil) {
     let folder =
@@ -25,6 +26,8 @@ struct ProductKnowledge: Decodable {
     knowledge =
       (try? JSONDecoder().decode([String: ProductKnowledge].self, from: Self.resource("knowledge")))
       ?? [:]
+    candidates =
+      (try? JSONDecoder().decode([ProductCandidate].self, from: Self.resource("candidates"))) ?? []
     state = AppState(products: products)
     do { if let loaded = try repository.load() { state = loaded } } catch {
       loadError =

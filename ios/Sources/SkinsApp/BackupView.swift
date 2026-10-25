@@ -36,12 +36,16 @@ struct BackupView: View {
         }
         Section {
           Button("バックアップを書き出す") {
+            SkinsStyle.feedback()
             do {
               document = try JournalDocument(state: store.state)
               exporting = true
             } catch { self.error = error.localizedDescription }
           }
-          Button("バックアップを読み込む") { importing = true }
+          Button("バックアップを読み込む") {
+            SkinsStyle.feedback()
+            importing = true
+          }
         } footer: {
           Text("JSONファイルで保存・復元できます。読み込み前のデータも端末内に保持します。")
         }
@@ -50,7 +54,12 @@ struct BackupView: View {
         }
         if let done { Section { Text(done).foregroundStyle(.secondary) } }
       }.navigationTitle("データとバックアップ").navigationBarTitleDisplayModeCompat().toolbar {
-        ToolbarItem(placement: .cancellationAction) { Button("閉じる") { dismiss() } }
+        ToolbarItem(placement: .cancellationAction) {
+          Button("閉じる") {
+            SkinsStyle.feedback()
+            dismiss()
+          }
+        }
       }
     }
     .fileExporter(
@@ -80,6 +89,7 @@ struct BackupView: View {
       isPresented: $confirmImport, titleVisibility: .visible
     ) {
       Button("読み込む") {
+        SkinsStyle.feedback()
         if let pending {
           do {
             try store.restore(pending)
@@ -88,12 +98,18 @@ struct BackupView: View {
         }
         pending = nil
       }
-      Button("キャンセル", role: .cancel) { pending = nil }
+      Button("キャンセル", role: .cancel) {
+        SkinsStyle.feedback()
+        pending = nil
+      }
     }
     .alert(
       "データを確認してください", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })
     ) {
-      Button("閉じる", role: .cancel) { error = nil }
+      Button("閉じる", role: .cancel) {
+        SkinsStyle.feedback()
+        error = nil
+      }
     } message: {
       Text(error ?? "")
     }

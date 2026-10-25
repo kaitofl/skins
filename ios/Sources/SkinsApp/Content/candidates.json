@@ -1,0 +1,50 @@
+[
+  {
+    "id": "curel-cream",
+    "name": "潤浸保湿 フェイスクリーム",
+    "brand": "Curél",
+    "size": "70g",
+    "kind": "moisture",
+    "asset": "curel-cream",
+    "points": [
+      "セラミド機能成分・ユーカリエキス配合",
+      "肌荒れを防ぐ医薬部外品"
+    ],
+    "howTo": "夜の乳液のあと、乾く頬や口元を中心に少量から。乳液で十分な日は追加せず、バームとの両方使いも必須ではありません。",
+    "source": "https://www.kao-kirei.com/ja/item/kbb/curel/4901301450555/",
+    "imageSource": "https://kao-h.assetsadobe3.com/is/image/content/dam/sites/kao/www-kao-kirei-com/jp/ja/item/kbb/curel/25330119/GG01.jpg",
+    "checkedAt": "2026-10-25"
+  },
+  {
+    "id": "ihada-balm",
+    "name": "薬用クリアバーム",
+    "brand": "IHADA",
+    "size": "18g",
+    "kind": "moisture",
+    "asset": "ihada-balm",
+    "points": [
+      "高精製ワセリン配合で乾燥から肌を保護",
+      "肌荒れ防止有効成分配合の医薬部外品"
+    ],
+    "howTo": "今のイハダ乳液のあと、乾燥が気になる部分に少量から。キュレルのクリームとは比較候補です。ニキビを治す薬としての提案ではありません。",
+    "source": "https://www.shiseido.co.jp/ihada/products/skincare-clear-berm.html",
+    "imageSource": "https://www.shiseido.co.jp/ihada/assets/img/products/skincare-clear-berm/img_skincare_10_1.webp",
+    "checkedAt": "2026-10-25"
+  },
+  {
+    "id": "curel-wash",
+    "name": "潤浸保湿 泡洗顔料",
+    "brand": "Curél",
+    "size": "150mL",
+    "kind": "cleanser",
+    "asset": "curel-wash",
+    "points": [
+      "セラミドを守りながら洗う泡タイプ",
+      "肌荒れを防ぐ医薬部外品"
+    ],
+    "howTo": "クレイ洗顔後につっぱる場合の置き換え候補。手で泡立てず使えます。今の洗顔料と重ねて2回洗う提案ではありません。落とすものに応じてメイク落としは別に確認してください。",
+    "source": "https://www.kao-kirei.com/ja/item/kbb/curel/4901301269348/",
+    "imageSource": "https://kao-h.assetsadobe3.com/is/image/content/dam/sites/kao/www-kao-kirei-com/jp/ja/item/kbb/curel/25940671/25940671_01.jpg",
+    "checkedAt": "2026-10-25"
+  }
+]

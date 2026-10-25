@@ -62,6 +62,7 @@ struct RecordEditor: View {
           HStack {
             SectionCaption(title: "ニキビの記録")
             Button("なしにする") {
+              SkinsStyle.feedback()
               spots = []
               draft.acne = "なし"
               selectedSpot = nil
@@ -71,7 +72,10 @@ struct RecordEditor: View {
           if spots.isEmpty, draft.acne != "なし", !draft.acne.isEmpty {
             Text("以前の記録：" + draft.acne).font(.subheadline).foregroundStyle(SkinsStyle.muted)
           }
-          Button("前回の位置を引き継ぐ") { carrySpots() }.font(.subheadline).disabled(
+          Button("前回の位置を引き継ぐ") {
+            SkinsStyle.feedback()
+            carrySpots()
+          }.font(.subheadline).disabled(
             store.state.previousSpots(before: draft.date).isEmpty)
           Divider()
           SectionCaption(title: "肌のメモ（任意）")
@@ -81,11 +85,15 @@ struct RecordEditor: View {
           TextField("施術名・クリニック・経過など", text: $draft.treatment).padding(14).background(
             SkinsStyle.surface, in: RoundedRectangle(cornerRadius: 12))
           if store.record(draft.date) != nil {
-            Button("この日の記録を削除", role: .destructive) { deleteRecord = true }.font(.subheadline)
+            Button("この日の記録を削除", role: .destructive) {
+              SkinsStyle.feedback()
+              deleteRecord = true
+            }.font(.subheadline)
               .padding(.top, 8)
           }
         }.padding(24).foregroundStyle(SkinsStyle.ink)
       }.scrollDismissesKeyboard(.interactively)
+        .sensoryFeedback(.selection, trigger: sleep)
         .safeAreaInset(edge: .bottom) {
           PrimaryButton(title: "記録を保存する", action: save).padding(18).background(.regularMaterial)
         }
@@ -93,7 +101,10 @@ struct RecordEditor: View {
         .navigationBarTitleDisplayModeCompat()
         .toolbar {
           ToolbarItem(placement: .cancellationAction) {
-            Button("閉じる") { if dirty { confirmClose = true } else { dismiss() } }
+            Button("閉じる") {
+              SkinsStyle.feedback()
+              if dirty { confirmClose = true } else { dismiss() }
+            }
           }
         }
         .onAppear {
@@ -106,16 +117,26 @@ struct RecordEditor: View {
           "入力中の内容を破棄して日付を変更しますか？", isPresented: $confirmDate, titleVisibility: .visible
         ) {
           Button("日付を変更", role: .destructive) {
+            SkinsStyle.feedback()
             if let pendingDate { load(DayKey.string(pendingDate)) }
             pendingDate = nil
           }
-          Button("キャンセル", role: .cancel) { pendingDate = nil }
+          Button("キャンセル", role: .cancel) {
+            SkinsStyle.feedback()
+            pendingDate = nil
+          }
         }
         .confirmationDialog("入力中の内容を破棄しますか？", isPresented: $confirmClose, titleVisibility: .visible)
-      { Button("破棄して閉じる", role: .destructive) { dismiss() } }
+      {
+        Button("破棄して閉じる", role: .destructive) {
+          SkinsStyle.feedback()
+          dismiss()
+        }
+      }
         .confirmationDialog("この日の記録を削除しますか？", isPresented: $deleteRecord, titleVisibility: .visible)
       {
         Button("削除", role: .destructive) {
+          SkinsStyle.feedback()
           if store.commit({ $0.records.removeAll { $0.date == draft.date } }) { dismiss() }
         }
       }
@@ -123,7 +144,10 @@ struct RecordEditor: View {
           "記録を確認してください",
           isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })
         ) {
-          Button("閉じる", role: .cancel) { error = nil }
+          Button("閉じる", role: .cancel) {
+            SkinsStyle.feedback()
+            error = nil
+          }
         } message: {
           Text(error ?? "")
         }

@@ -84,6 +84,7 @@ struct ShelfView: View {
           }
         }
         Button {
+          SkinsStyle.feedback()
           adding = true
         } label: {
           Label("アイテムを追加", systemImage: "plus")
@@ -96,8 +97,11 @@ struct ShelfView: View {
     .toolbar {
       if isReordering {
         ToolbarItem(placement: .confirmationAction) {
-          Button("完了") { isReordering = false }
-            .font(.body.weight(.semibold))
+          Button("完了") {
+            SkinsStyle.feedback()
+            isReordering = false
+          }
+          .font(.body.weight(.semibold))
         }
       }
     }
@@ -174,7 +178,7 @@ private struct ShelfSlot: View {
         .matchedGeometryEffect(id: product.id, in: reorderNamespace)
         .modifier(ShelfWiggle(enabled: isReordering, alternate: product.id.isMultiple(of: 2)))
     }
-    .buttonStyle(.plain).frame(maxWidth: .infinity)
+    .buttonStyle(SkinsPressStyle()).frame(maxWidth: .infinity)
     .contentShape(.interaction, Rectangle())
     .contentShape(.dragPreview, RoundedRectangle(cornerRadius: 24, style: .continuous))
     .overlay {
@@ -257,16 +261,6 @@ private struct ShelfItem: View {
   let artHeight: CGFloat
   let numberHeight: CGFloat
 
-  private var role: String {
-    if product.name.localizedCaseInsensitiveContains("PDRN") { return "保湿美容液" }
-    if product.name.contains("ビタミン") || product.name.contains("PORESTRIX") {
-      return "ビタミンC美容液"
-    }
-    if product.name.contains("アゼライン酸") { return "アゼライン酸美容液" }
-    if product.name.contains("レチナール") { return "レチナール美容液" }
-    return product.type
-  }
-
   var body: some View {
     VStack(spacing: 0) {
       Text(step)
@@ -288,7 +282,7 @@ private struct ShelfItem: View {
           .font(.caption.weight(.semibold))
           .foregroundStyle(SkinsStyle.ink)
           .lineLimit(1).minimumScaleFactor(0.85)
-        Text(role)
+        Text(product.shelfLabel)
           .font(.caption)
           .foregroundStyle(SkinsStyle.muted)
           .multilineTextAlignment(.center)

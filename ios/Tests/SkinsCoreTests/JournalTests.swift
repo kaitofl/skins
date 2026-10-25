@@ -108,6 +108,69 @@ func reorderedProductsPersistAcrossLaunches() throws {
   try check(restored == state)
 }
 
+func rollingCalendarContainsExactlyThreeWeeks() throws {
+  for (end, start) in [
+    ("2026-01-05", "2025-12-16"), ("2024-03-05", "2024-02-14"), ("2026-10-25", "2026-10-05"),
+  ] {
+    let days = DayKey.recentDays(ending: DayKey.date(end)!)
+    try check(days.count == 21)
+    try check(Set(days).count == 21)
+    try check(days.first == start && days.last == end)
+    for (left, right) in zip(days, days.dropFirst()) {
+      try check(
+        DayKey.calendar.dateComponents([.day], from: DayKey.date(left)!, to: DayKey.date(right)!)
+          .day == 1)
+    }
+  }
+}
+func existingAcneStatusRoundTripsWithoutBreakingLegacyData() throws {
+  let spot = AcneSpot(x: 30, y: 55, status: .existing)
+  var record = SkinRecord(date: "2026-01-01", acneSpots: [spot])
+  record.updateAcneSummary()
+  let state = AppState(records: [record])
+  let restored = try JSONDecoder().decode(AppState.self, from: JSONEncoder().encode(state))
+    .validated()
+  try check(restored == state)
+  try check(restored.records[0].acne.contains("前からある"))
+  for value in ["new", "worse", "better"] {
+    try check(
+      try JSONDecoder().decode(SpotStatus.self, from: Data(("\"" + value + "\"").utf8)).rawValue
+        == value)
+  }
+}
+func adviceRequiresFreshRecordsAndRelevantOwnedProducts() throws {
+  let retinal = Product(id: 1, name: "レチナール", time: .pm)
+  let moisturizer = Product(id: 2, name: "乳液", type: "乳液", time: .pm)
+  let worse = AcneSpot(x: 30, y: 55, status: .worse)
+  var state = AppState(products: [retinal, moisturizer])
+  let today = "2026-01-10"
+  try check(!CareAdvice.current(state, today: today).contains { $0.context != nil })
+  try check(CareAdvice.examples(state).contains { $0.id == "example-irritation" })
+  state.records = [SkinRecord(date: "2026-01-09", mood: .dry, acneSpots: [worse])]
+  let advice = CareAdvice.current(state, today: today)
+  try check(advice.contains { $0.id == "worse" && $0.context == "2026-01-09 の記録から" })
+  try check(advice.contains { $0.id == "dry" })
+  try check(advice.allSatisfy { Set($0.productIDs).isSubset(of: [1, 2]) })
+  state.records = [SkinRecord(date: "2026-01-01", acneSpots: [worse])]
+  try check(!CareAdvice.current(state, today: today).contains { $0.context != nil })
+  state.records = [SkinRecord(date: "2026-01-11", acneSpots: [worse])]
+  try check(!CareAdvice.current(state, today: today).contains { $0.context != nil })
+  state.records = [SkinRecord(date: today, acneSpots: [worse])]
+  state.products = [moisturizer]
+  try check(!CareAdvice.current(state, today: today).contains { $0.id == "worse" })
+  try check(!CareAdvice.examples(state).contains { $0.id == "example-irritation" })
+}
+func improvementIsNotSuggestedForMixedWorseningRecords() throws {
+  let retinal = Product(id: 1, name: "レチナール", time: .pm)
+  let better = AcneSpot(x: 30, y: 55, status: .better)
+  let worse = AcneSpot(x: 70, y: 55, status: .worse)
+  var state = AppState(
+    products: [retinal], records: [SkinRecord(date: "2026-01-10", acneSpots: [better, worse])])
+  try check(!CareAdvice.current(state, today: "2026-01-10").contains { $0.id == "better" })
+  state.records[0].acneSpots = [better]
+  try check(CareAdvice.current(state, today: "2026-01-10").contains { $0.id == "better" })
+}
+
 private func check(
   _ condition: @autoclosure () throws -> Bool, file: StaticString = #filePath, line: UInt = #line
 ) throws {
@@ -134,6 +197,19 @@ private func expectThrows(_ action: () throws -> Void) throws {
       ("Face bounds and usage schedules", validatesSpotBoundsAndProductSchedule),
       ("Reorder isolates routines and preserves records", reorderPreservesOtherRoutineAndRecords),
       ("Reordered shelf persists across launches", reorderedProductsPersistAcrossLaunches),
+      ("Rolling calendar covers exactly 21 local dates", rollingCalendarContainsExactlyThreeWeeks),
+      (
+        "Existing acne status and legacy compatibility",
+        existingAcneStatusRoundTripsWithoutBreakingLegacyData
+      ),
+      (
+        "Advice requires fresh records and owned products",
+        adviceRequiresFreshRecordsAndRelevantOwnedProducts
+      ),
+      (
+        "Mixed acne states avoid a false improvement suggestion",
+        improvementIsNotSuggestedForMixedWorseningRecords
+      ),
     ]
     for (name, run) in checks {
       try run()

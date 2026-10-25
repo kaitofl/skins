@@ -34,10 +34,11 @@ public enum CareStatus: String, Codable, CaseIterable, Sendable {
   }
 }
 public enum SpotStatus: String, Codable, CaseIterable, Sendable {
-  case new, worse, better
+  case new, existing, worse, better
   public var title: String {
     switch self {
     case .new: "新しくできた"
+    case .existing: "前からある"
     case .worse: "悪化した"
     case .better: "良くなってきた"
     }
@@ -92,6 +93,24 @@ public struct Product: Identifiable, Codable, Equatable, Sendable {
     self.type = type
     self.time = time
     self.days = days
+  }
+  /// Compact shelf captions; full product names remain available in item details.
+  public var shelfLabel: String {
+    if name.localizedCaseInsensitiveContains("PDRN") { return "PDRN" }
+    if name.contains("ビタミン") || name.localizedCaseInsensitiveContains("PORESTRIX") {
+      return "ビタミンC"
+    }
+    if name.contains("アゼライン酸") { return "アゼライン酸" }
+    if name.contains("レチナール") { return "レチナール" }
+    if name.contains("レチノール") { return "レチノール" }
+    switch type {
+    case "クレンジング": return "メイク落とし"
+    case "洗顔料": return "洗顔"
+    case "日焼け止め": return "UV"
+    case "化粧下地": return "下地"
+    case "BBクリーム": return "BB"
+    default: return type
+    }
   }
   public var journalKey: String { sourceUrl ?? "\(brand):\(name)" }
   public var displayName: String { shortName ?? name }
@@ -260,6 +279,13 @@ public enum DayKey {
         from: DateComponents(year: parts[0], month: parts[1], day: parts[2])), string(result) == key
     else { return nil }
     return result
+  }
+  /// Exactly 21 local calendar dates ending today; includes month/year boundaries.
+  public static func recentDays(ending date: Date = Date()) -> [String] {
+    let end = calendar.startOfDay(for: date)
+    return (-20...0).compactMap { offset in
+      calendar.date(byAdding: .day, value: offset, to: end).map(string)
+    }
   }
   public static func monthDays(_ date: Date) -> [String?] {
     let first = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!

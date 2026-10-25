@@ -74,6 +74,7 @@ struct FaceMap: View {
           })
         ForEach(Array(spots.enumerated()), id: \.element.id) { index, spot in
           Button {
+            SkinsStyle.feedback()
             selectedID = spot.id
             SkinsStyle.feedback()
           } label: {
@@ -85,7 +86,7 @@ struct FaceMap: View {
                   selectedID == spot.id ? spot.status?.color ?? SkinsStyle.muted : .clear,
                   lineWidth: 2)
               ).frame(width: 44, height: 44)
-          }.buttonStyle(.plain).position(
+          }.buttonStyle(SkinsPressStyle()).position(
             x: geo.size.width * spot.x / 100, y: geo.size.height * spot.y / 100
           ).accessibilityLabel("\(index+1)番、\(spot.area)、\(spot.status?.title ?? "状態未選択")")
         }
@@ -96,12 +97,14 @@ struct FaceMap: View {
             Text("\(index+1) · \(spots[index].area)").font(.headline)
             Spacer()
             Button("削除", role: .destructive) {
+              SkinsStyle.feedback()
               spots.remove(at: index)
               selectedID = spots.first?.id
             }.font(.subheadline)
           }
           ForEach(SpotStatus.allCases, id: \.self) { status in
             Button {
+              SkinsStyle.feedback()
               spots[index].status = status
               SkinsStyle.feedback()
             } label: {
@@ -111,7 +114,7 @@ struct FaceMap: View {
                 Spacer()
                 if spots[index].status == status { Image(systemName: "checkmark") }
               }.font(.subheadline).frame(minHeight: 40)
-            }.buttonStyle(.plain).accessibilityAddTraits(
+            }.buttonStyle(SkinsPressStyle()).accessibilityAddTraits(
               spots[index].status == status ? .isSelected : [])
           }
         }.padding(16).background(SkinsStyle.surface, in: RoundedRectangle(cornerRadius: 14))
@@ -126,6 +129,7 @@ struct FaceMap: View {
           ], id: \.0
         ) { area, x, y in
           Button(area) {
+            SkinsStyle.feedback()
             let spot = AcneSpot(x: x, y: y, area: area)
             spots.append(spot)
             selectedID = spot.id

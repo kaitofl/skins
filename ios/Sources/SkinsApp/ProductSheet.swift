@@ -52,11 +52,21 @@ struct ProductSheet: View {
           } else if let source = current.sourceUrl, let url = URL(string: source) {
             Link("公式の商品情報 ↗", destination: url)
           }
-          Button("登録内容を修正") { editing = true }.frame(maxWidth: .infinity, minHeight: 48)
+          Button("登録内容を修正") {
+            SkinsStyle.feedback()
+            editing = true
+          }.frame(maxWidth: .infinity, minHeight: 48)
             .buttonStyle(.bordered)
         }.padding(24).foregroundStyle(SkinsStyle.ink)
       }.navigationTitle("アイテム").navigationBarTitleDisplayModeCompat()
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("閉じる") { dismiss() } } }
+        .toolbar {
+          ToolbarItem(placement: .cancellationAction) {
+            Button("閉じる") {
+              SkinsStyle.feedback()
+              dismiss()
+            }
+          }
+        }
     }.presentationDetents([.large]).presentationDragIndicator(.visible)
       .onAppear {
         dates = store.journal(current)
@@ -156,12 +166,26 @@ struct ProductEditor: View {
             }
           }
         }
-        if existing { Section { Button("棚から外す", role: .destructive) { confirmDelete = true } } }
-      }.navigationTitle(existing ? "アイテムを編集" : "アイテムを追加").navigationBarTitleDisplayModeCompat()
+        if existing {
+          Section {
+            Button("棚から外す", role: .destructive) {
+              SkinsStyle.feedback()
+              confirmDelete = true
+            }
+          }
+        }
+      }.sensoryFeedback(.selection, trigger: product)
+        .navigationTitle(existing ? "アイテムを編集" : "アイテムを追加").navigationBarTitleDisplayModeCompat()
         .toolbar {
-          ToolbarItem(placement: .cancellationAction) { Button("キャンセル") { dismiss() } }
+          ToolbarItem(placement: .cancellationAction) {
+            Button("キャンセル") {
+              SkinsStyle.feedback()
+              dismiss()
+            }
+          }
           ToolbarItem(placement: .confirmationAction) {
             Button("保存") {
+              SkinsStyle.feedback()
               if store.saveProduct(product) {
                 SkinsStyle.feedback()
                 dismiss()
@@ -175,6 +199,7 @@ struct ProductEditor: View {
           "このアイテムを棚から外しますか？", isPresented: $confirmDelete, titleVisibility: .visible
         ) {
           Button("棚から外す", role: .destructive) {
+            SkinsStyle.feedback()
             if store.commit({ $0.products.removeAll { $0.id == product.id } }) { dismiss() }
           }
         }

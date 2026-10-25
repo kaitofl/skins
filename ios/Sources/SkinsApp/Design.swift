@@ -16,9 +16,15 @@ enum SkinsStyle {
   static let muted = Color(red: 0.49, green: 0.58, blue: 0.68)
   static let surface = Color(red: 0.96, green: 0.97, blue: 0.99)
   static let line = Color(red: 0.87, green: 0.90, blue: 0.94)
-  static func feedback() {
+  @MainActor private static var lastFeedback = 0.0
+  @MainActor static func feedback() {
     #if os(iOS)
-      UISelectionFeedbackGenerator().selectionChanged()
+      let now = Date.timeIntervalSinceReferenceDate
+      guard now - lastFeedback > 0.12 else { return }
+      lastFeedback = now
+      let generator = UIImpactFeedbackGenerator(style: .soft)
+      generator.prepare()
+      generator.impactOccurred(intensity: 0.8)
     #endif
   }
 }
@@ -36,6 +42,7 @@ extension SpotStatus {
   var color: Color {
     switch self {
     case .new: Color(red: 0.70, green: 0.59, blue: 0.44)
+    case .existing: SkinsStyle.accent
     case .worse: Color(red: 0.75, green: 0.49, blue: 0.51)
     case .better: Color(red: 0.47, green: 0.65, blue: 0.60)
     }
@@ -120,8 +127,10 @@ struct PrimaryButton: View {
   var body: some View {
     Button(action: action) {
       Text(title).font(.headline).frame(maxWidth: .infinity).padding(.vertical, 14)
-    }.buttonStyle(.plain).background(SkinsStyle.accent, in: RoundedRectangle(cornerRadius: 14))
-      .foregroundStyle(.white)
+    }.buttonStyle(SkinsPressStyle()).background(
+      SkinsStyle.accent, in: RoundedRectangle(cornerRadius: 14)
+    )
+    .foregroundStyle(.white)
   }
 }
 struct ChoiceGrid<Value: Hashable>: View {
@@ -137,7 +146,7 @@ struct ChoiceGrid<Value: Hashable>: View {
         } label: {
           Text(label(value)).font(.subheadline).frame(maxWidth: .infinity, minHeight: 46).padding(
             .horizontal, 4)
-        }.buttonStyle(.plain).foregroundStyle(
+        }.buttonStyle(SkinsPressStyle()).foregroundStyle(
           selection == value ? SkinsStyle.ink : SkinsStyle.muted
         )
         .background(
@@ -151,5 +160,19 @@ struct ChoiceGrid<Value: Hashable>: View {
         .accessibilityAddTraits(selection == value ? .isSelected : [])
       }
     }
+  }
+}
+
+/// A small press response pairs the physical tap with visible feedback.
+struct SkinsPressStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .scaleEffect(configuration.isPressed && !reduceMotion ? 0.97 : 1)
+      .opacity(configuration.isPressed ? 0.78 : 1)
+      .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+      .onChange(of: configuration.isPressed) { _, pressed in
+        if pressed { SkinsStyle.feedback() }
+      }
   }
 }
