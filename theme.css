@@ -74,3 +74,6 @@ html,body,.shell{background:#fff}
 /* A single board per row prevents overlapping shadows at product boundaries. */
 .shelf-mode .shelf-photo::after{display:none}
 .shelf-mode .shelf-product:nth-child(3n+1) .shelf-photo::after{display:block;left:calc(-1 * var(--page-gutter));right:auto;width:calc(300% + 20px + var(--page-gutter) * 2);box-shadow:0 3px 7px #3d587716}
+
+.shelf-days{font-size:11px;font-weight:500;line-height:1.6;letter-spacing:.06em;color:#6c829e;margin-top:1px}
+.collection-workspace>.routine-groups>.shelf-row:first-child{margin-top:4px}
