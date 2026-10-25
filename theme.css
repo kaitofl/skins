@@ -67,6 +67,18 @@ button:focus-visible,a:focus-visible{outline-color:#9fb9d5}
 html,body,.shell{background:#fff}
 .shelf-mode .product-grid{background:#fff;box-shadow:none}
 .sidebar{background:#fffffff2}
-/* Daylight and evening tint the shelf wall, fading softly into white. */
-.shelf-mode .shelf-row:has(#track-am)>.product-grid{background:radial-gradient(ellipse 115% 65% at 12% 38%,#edf4fb 0%,transparent 78%),linear-gradient(180deg,#fff 0%,#f3f7fc 15%,#f6f9fd 78%,#fff 100%)}
-.shelf-mode .shelf-row:has(#track-pm)>.product-grid,.shelf-mode .shelf-row:has(#track-pm) .pending-care>.product-grid{background:radial-gradient(ellipse 115% 70% at 90% 40%,#e8edf7 0%,transparent 80%),linear-gradient(180deg,#fff 0%,#edf1f8 17%,#f0f3f9 78%,#fff 100%)}
+/* One continuous day-to-night backdrop spans the complete scroll surface. */
+.shell{background:linear-gradient(180deg,#fff 0%,#f2f7ff 17%,#d9e7f7 34%,#aac0dc 52%,#6a85aa 72%,#2c4365 100%)}
+.shelf-mode .product-grid{background:transparent;box-shadow:none}
+.shelf-row:has(#track-pm) .shelf-label h2{color:#f3f7ff}
+.shelf-row:has(#track-pm) .shelf-label h2 svg{color:#d1dff2}
+.shelf-mode .shelf-row:has(#track-pm) .shelf-step{color:#d7e3f3;text-shadow:0 1px 1px #2b426028}
+.shelf-mode .shelf-row:has(#track-pm) .shelf-brand{color:#f5f8ff}
+.shelf-mode .shelf-row:has(#track-pm) .shelf-role{color:#d9e4f4}
+.shelf-row:has(#track-pm) .pending-care summary{color:#dce7f8}
+.shelf-row:has(#track-pm) .no-care{color:#e3edfa}
+.shelf-photo .source-white-bg{mix-blend-mode:darken}
+.shelf-mode .shelf-role{color:#617894}
+.shelf-mode .shelf-brand{color:#405773}
+.shelf-mode .shelf-row:has(#track-pm) .shelf-brand{color:#f5f8ff}
+.shelf-mode .shelf-row:has(#track-pm) .shelf-role{color:#d9e4f4}
